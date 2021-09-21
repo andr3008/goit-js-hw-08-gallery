@@ -1,3 +1,18 @@
+// Создание и рендер разметки по массиву данных galleryItems из app.js и предоставленному шаблону.
+// Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
+// Открытие модального окна по клику на элементе галереи.
+// Подмена значения атрибута src элемента img.lightbox__image.
+// Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
+// Очистка значения атрибута src элемента img.lightbox__image.Это необходимо для того,
+// 	чтобы при следующем открытии модального окна, пока грузится изображение, мы не видели предыдущее.
+
+// Стартовые файлы
+// В папке src ты найдешь стартовые файлы проекта с базовой разметкой и готовыми стилями.
+// В файле app.js есть массив galleryItems, который содержит объекты с информацией о
+// изображениях: маленькое изображение, оригинальное и описание.
+// Разметка элемента галереи
+// Ссылка на оригинальное изображение должна храниться в data - атрибуте source на элементе
+// img, и указываться в href ссылки(это необходимо для доступности).
 const galleryItems = [
 	{
 		preview:
@@ -63,3 +78,26 @@ const galleryItems = [
 		description: "Lighthouse Coast Sea",
 	},
 ];
+const imageEl = document.querySelector(".js-gallery");
+const imagesMarkup = createImagesList(galleryItems);
+
+imageEl.insertAdjacentHTML("beforeend", imagesMarkup);
+imageEl.addEventListener("click", onImageClick);
+
+function createImagesList(galleryItems) {
+	return galleryItems
+		.map(({ preview, original, description }) => {
+			return `<li class = 'gallery__item'>
+	        <a class = 'gallery__link' href = '${original}' >
+            <img class = 'gallery__image' src = '${preview}' alt = '${description}'/></a></li>`;
+		})
+		.join("");
+}
+
+function onImageClick(e) {
+	// e.preventDefault();
+	if (!e.target.classList.contains("gallery__image")) {
+		return;
+	}
+	console.log(e.target);
+}
