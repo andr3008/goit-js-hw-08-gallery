@@ -76,6 +76,7 @@ imageEl.insertAdjacentHTML("beforeend", imagesMarkup);
 imageEl.addEventListener("click", onImageClick);
 closeBtn.addEventListener("click", onCloseBtn);
 backdropClose.addEventListener("click", onBackdropClick);
+document.addEventListener("keydown", onLeftRigthClick);
 
 function createImagesList(galleryItems) {
 	return galleryItems
@@ -111,5 +112,31 @@ function onBackdropClick(e) {
 function onEscBtnPress(e) {
 	if (e.code === "Escape") {
 		onCloseBtn();
+	}
+}
+
+function onLeftRigthClick(e) {
+	const dataSource = galleryItems.map(({ original }) => original);
+	let currentIndex = dataSource.indexOf(imageRef.src);
+	if (e.key === "ArrowLeft") {
+		leftClick(currentIndex);
+	} else if (e.key === "ArrowRight") {
+		rightClick(currentIndex);
+	}
+
+	function leftClick(currentIndex) {
+		let nextIndex = currentIndex - 1;
+		if (nextIndex === -1) {
+			nextIndex = dataSource.length - 1;
+		}
+		imageRef.src = dataSource[nextIndex];
+	}
+
+	function rightClick(currentIndex) {
+		let nextIndex = currentIndex + 1;
+		if (nextIndex === dataSource.length) {
+			nextIndex = 0;
+		}
+		imageRef.src = dataSource[nextIndex];
 	}
 }
